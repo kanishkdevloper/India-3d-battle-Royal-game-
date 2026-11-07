@@ -9,7 +9,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 
 /**
- * PNG icons of the touch HUD. The files live in assets/ui/hud/*.png and were cut one by one out of the icon sheet
+ * PNG icons of the touch HUD. The files live in assets/ui/hud/NAME.png and were cut one by one out of the icon sheet
  * (square 256 x 256, transparent corners). Every button draws its PNG; a missing file makes [button] return false and
  * the caller falls back to the old round text button, so the HUD can never end up without a button.
  */
