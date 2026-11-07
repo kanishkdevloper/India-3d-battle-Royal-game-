@@ -1,0 +1,15 @@
+# --- secrets: NEVER commit these ---
+*.jks
+*.keystore
+keystore.properties
+UPLOAD_KEY_SECRETS.txt
+# --- build output / IDE ---
+.gradle/
+build/
+/dist/
+local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+.cxx/

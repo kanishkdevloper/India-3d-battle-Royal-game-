@@ -1,5 +1,7 @@
 name: Build Dustline (APK + AAB)
 
+# Run it by hand: GitHub > Actions > "Build Dustline (APK + AAB)" > Run workflow.
+# It also runs on every push to main / master.
 on:
   workflow_dispatch:
   push:
@@ -17,9 +19,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      # Installs the Android SDK command-line tools and accepts the licences;
+      # the Android Gradle Plugin then downloads platform 36 / build-tools by itself.
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
 
+      # Gradle 8.13 is downloaded and put on PATH (the project has no gradlew script).
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.13'
@@ -31,8 +36,9 @@ jobs:
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/dustline-upload.jks"
             echo "DUSTLINE_KEYSTORE_FILE=$RUNNER_TEMP/dustline-upload.jks" >> "$GITHUB_ENV"
+            echo "Keystore restored - the release build will be signed."
           else
-            echo "::warning::KEYSTORE_BASE64 not set - release will be UNSIGNED."
+            echo "::warning::Secret KEYSTORE_BASE64 is not set - the release APK/AAB will be UNSIGNED (the debug APK is still built)."
           fi
 
       - name: Build debug APK, release APK and release AAB
